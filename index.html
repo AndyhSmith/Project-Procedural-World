@@ -1,18 +1,21 @@
 <html>
 <head>
-
+    <title>Map</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="index.css">
     
 </head>
-<body>
+<body onmousedown="onStartClick(event)" onmouseup="onEndClick()" onmousemove="onMouseMove(event)" ontouchstart="handleTouchStart(event)" ontouchend="handleTouchEnd()" ontouchmove="handleTouchMove(event)">
 
-    <button onclick="zoomIn()">Zoom In</button>
-    <button style="top: 20px;" onclick="zoomOut()">Zoom Out</button>
+    <button class="option" onclick="zoomIn()"><span class="material-icons">zoom_in</span></button>
+    <button class="option" style="top: 70px;" onclick="zoomOut()"><span class="material-icons">zoom_out</span></button>
     
     <canvas id="canvas-background"></canvas>
     <canvas id="canvas"></canvas>
     
-    
+    <script src="js/perlin.js"></script>
+
     <script src="js/draw.js"></script>
     <script src="js/helper.js"></script>
     <script src="js/input.js"></script>
@@ -21,6 +24,7 @@
 
     <script src="js/stars.js"></script>
     <script src="index.js"></script>
+    
 </body>
 
 

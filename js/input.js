@@ -1,6 +1,6 @@
-document.addEventListener('touchstart', handleTouchStart, false);        
-document.addEventListener('touchmove', handleTouchMove, false);
-document.addEventListener('touchend', handleTouchEnd, false);
+// document.addEventListener('touchstart', handleTouchStart, false);        
+// document.addEventListener('touchmove', handleTouchMove, false);
+// document.addEventListener('touchend', handleTouchEnd, false);
 
 var xDown = null;                                                        
 var yDown = null;
@@ -15,8 +15,73 @@ function getTouches(evt) {
          evt.originalEvent.touches; // jQuery
 }                                                     
 
-function handleTouchEnd(evt) {
-    if (!moved) {
+
+// END
+// TOUCH END
+function handleTouchEnd() {
+    moved = false
+    checkClick()
+}
+
+// CLICK END
+function onEndClick() {
+    moved = false
+    checkClick()
+}
+
+
+// START
+// TOUCH START
+function handleTouchStart(evt) {
+    console.log("touch start")
+    moved = true;
+    const firstTouch = getTouches(evt)[0];                                      
+    xDown = firstTouch.clientX;                                      
+    yDown = firstTouch.clientY; 
+};    
+
+// CLICK START
+function onStartClick(event) {
+    moved = true;
+    xDown = event.clientX;                                      
+    yDown = event.clientY; 
+}
+
+
+// MOVE
+// TOUCH MOVE
+function handleTouchMove(evt) {
+    handleMove(evt.touches[0])                                         
+};
+
+// CLICK MOVE
+function onMouseMove(event) {
+    handleMove(event)
+}
+
+function handleMove(event) {
+    if (moved) {
+        var xUp = event.clientX;                                    
+        var yUp = event.clientY;
+        
+
+        var xDiff = xDown - xUp;
+        var yDiff = yDown - yUp;
+        
+        camera.x -= xDiff;
+        camera.y -= yDiff;
+
+        draw()
+
+    
+        xDown = xUp;
+        yDown = yUp;  
+    }
+}
+
+// CHECKING CLICK
+function checkClick() {
+
         if (m.selectedX != null && m.selectedY != null) {
             m.map[m.selectedX][m.selectedY].selected = false
         }
@@ -39,33 +104,9 @@ function handleTouchEnd(evt) {
             m.map[m.selectedX][m.selectedY].selected = true;
             draw()
         } 
-    }  
+  
 }
 
-function handleTouchStart(evt) {
-    const firstTouch = getTouches(evt)[0];                                      
-    xDown = firstTouch.clientX;                                      
-    yDown = firstTouch.clientY; 
-    moved = false  
-      
-};                                                
 
-function handleTouchMove(evt) {
-    
-    moved = true
-    var xUp = evt.touches[0].clientX;                                    
-    var yUp = evt.touches[0].clientY;
-    
 
-    var xDiff = xDown - xUp;
-    var yDiff = yDown - yUp;
-    
-    camera.x -= xDiff;
-    camera.y -= yDiff;
 
-    draw()
-
- 
-    xDown = xUp;
-    yDown = yUp;                                             
-};
