@@ -21,10 +21,13 @@ function draw() {
             ctx.fillStyle = m.map[i][j].renderedColor
             ctx.fillRect(m.tileSize*i + camera.x, m.tileSize*j + camera.y, m.tileSize, m.tileSize);
 
-            // if (m.map[i][j].selected) {
-            //     ctx.fillStyle = "red"
-            //     ctx.fillRect(m.tileSize*i + camera.x, m.tileSize*j + camera.y, m.tileSize, m.tileSize);
-            // }
+            // If selected
+            if (m.map[i][j].selected) {
+                ctx.lineWidth = "4";
+                ctx.strokeStyle = "#000";
+                ctx.rect(m.tileSize*i + camera.x, m.tileSize*j + camera.y, m.tileSize, m.tileSize);
+                ctx.stroke();                
+            }
         }
     }
     ctx.stroke();

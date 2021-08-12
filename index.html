@@ -6,11 +6,22 @@
     <link rel="stylesheet" href="index.css">
     
 </head>
-<body onmousedown="onStartClick(event)" onmouseup="onEndClick()" onmousemove="onMouseMove(event)" ontouchstart="handleTouchStart(event)" ontouchend="handleTouchEnd()" ontouchmove="handleTouchMove(event)">
+<body onmousedown="onStartClick(event)" onmouseup="onEndClick(event)" onmousemove="onMouseMove(event)" ontouchstart="handleTouchStart(event)" ontouchend="handleTouchEnd(event)" ontouchmove="handleTouchMove(event)">
 
     <button class="option" onclick="zoomIn()"><span class="material-icons">zoom_in</span></button>
     <button class="option" style="top: 70px;" onclick="zoomOut()"><span class="material-icons">zoom_out</span></button>
     
+    <div id="info">
+        <div id="info-image"></div>
+        <div id="info-title"><div id="info-title-container">Info Title</div></div>
+        <div id="info-details">
+            <div class="info-option">Stat 1</div>
+            <div class="info-option">Stat 1</div>
+            <div class="info-option">Stat 1</div>
+
+        </div>
+    </div>
+
     <canvas id="canvas-background"></canvas>
     <canvas id="canvas"></canvas>
     

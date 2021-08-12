@@ -8,11 +8,11 @@ c.height = window.innerHeight;
 // Variables
 m = {
     map: [],
-    tileSize: 64,
+    tileSize: 20,
     selectedX: null,
     selectedY: null,
-    w: 300,
-    h: 200,
+    w: 1000,
+    h: 500,
 }
 
 camera = {
@@ -59,6 +59,20 @@ for (let j = 0; j < m.w; j++) {
         // Redistribute
         height = Math.pow(height, 2)
         m.map[j][i].h = height
+    }
+}
+
+// Generate Moisture
+noise.seed(Math.random());
+for (let j = 0; j < m.w; j++) {
+    for (let i = 0; i < m.h; i++) {
+        // GENERATE HEIGHT MAP
+        let moisture = noiseW(i/ 100, j/ 100) + .5 * noiseW(i/ 50, j/ 50) + .25 * noiseW(i/ 25, j/ 25)
+        // Between 0-1
+        moisture = moisture / (1 + .5 + .25)
+        // Redistribute
+        moisture = Math.pow(moisture, 1.5)
+        m.map[j][i].m = moisture
     }
 }
 

@@ -1,12 +1,10 @@
-// document.addEventListener('touchstart', handleTouchStart, false);        
-// document.addEventListener('touchmove', handleTouchMove, false);
-// document.addEventListener('touchend', handleTouchEnd, false);
-
 var xDown = null;                                                        
 var yDown = null;
 
-var xUpEnd = null;                                                        
-var yUpEnd = null;
+var xStart = null;
+var yStart = null;
+var xEnd = null;                                    
+var yEnd = null;
 
 var moved = false
 
@@ -18,14 +16,19 @@ function getTouches(evt) {
 
 // END
 // TOUCH END
-function handleTouchEnd() {
+function handleTouchEnd(event) {
     moved = false
+    const lastTourch = getTouches(event)[0];  
+    xEnd = lastTourch.clientX;   
+    yEnd = lastTourch.clientY; 
     checkClick()
 }
 
 // CLICK END
-function onEndClick() {
+function onEndClick(event) {
     moved = false
+    xEnd = event.clientX
+    yEnd = event.clientY
     checkClick()
 }
 
@@ -38,6 +41,8 @@ function handleTouchStart(evt) {
     const firstTouch = getTouches(evt)[0];                                      
     xDown = firstTouch.clientX;                                      
     yDown = firstTouch.clientY; 
+    xStart = firstTouch.clientX;   
+    yStart = firstTouch.clientY; 
 };    
 
 // CLICK START
@@ -45,6 +50,8 @@ function onStartClick(event) {
     moved = true;
     xDown = event.clientX;                                      
     yDown = event.clientY; 
+    xStart = event.clientX;   
+    yStart = event.clientY; 
 }
 
 
@@ -81,30 +88,31 @@ function handleMove(event) {
 
 // CHECKING CLICK
 function checkClick() {
-
+    // If not draged
+    if (Math.abs(xStart - xEnd) < 20 && Math.abs(yStart - yEnd) < 20) {
+        // Unselect Selection
         if (m.selectedX != null && m.selectedY != null) {
             m.map[m.selectedX][m.selectedY].selected = false
         }
-        
+
+        // Choose Selection
         m.selectedX = Math.floor((xDown - camera.x) / m.tileSize)
         m.selectedY = Math.floor((yDown - camera.y) / m.tileSize)  
-        if (m.selectedX > m.w - 1) {
-            m.selectedX = null
-        }
-        else if (m.selectedY > m.h - 1) {
-            m.selectedY = null
-        }
 
-        if (m.selectedX != null && m.selectedY != null) {
-            
-            // m.map[m.selectedX][m.selectedY].r = 0
-            // m.map[m.selectedX][m.selectedY].g = 128
-            // m.map[m.selectedX][m.selectedY].b = 128
-            // m.map[m.selectedX][m.selectedY].renderColor()
+        // Insure Selection is inbounds
+        if (m.selectedX < 0 || m.selectedY < 0 || m.selectedX > m.w || m.selectedY > m.h) {
+            m.selectedX = null
+            m.selectedY = null
+            document.getElementById("info").style.display = "none"
+        } else {
             m.map[m.selectedX][m.selectedY].selected = true;
-            draw()
-        } 
-  
+            document.getElementById("info-image").style.backgroundColor = m.map[m.selectedX][m.selectedY].renderedColor;
+            document.getElementById("info-title-container").innerHTML = m.map[m.selectedX][m.selectedY].b.toUpperCase();
+            document.getElementById("info-details").innerHTML = '<div class="info-option">'+ 'Height: ' + m.map[m.selectedX][m.selectedY].h.toFixed(2) + '</div>' + '<div class="info-option"> '+ 'Moisture: ' + m.map[m.selectedX][m.selectedY].m.toFixed(2) + '</div>'
+            document.getElementById("info").style.display = "inline-block"
+        }
+        draw()
+    }
 }
 
 
