@@ -89,7 +89,7 @@ function handleMove(event) {
 // CHECKING CLICK
 function checkClick() {
     // If not draged
-    if (Math.abs(xStart - xEnd) < 20 && Math.abs(yStart - yEnd) < 20) {
+    if (Math.abs(xStart - xEnd) < 30 && Math.abs(yStart - yEnd) < 30) {
         // Unselect Selection
         if (m.selectedX != null && m.selectedY != null) {
             m.map[m.selectedX][m.selectedY].selected = false
@@ -104,12 +104,14 @@ function checkClick() {
             m.selectedX = null
             m.selectedY = null
             document.getElementById("info").style.display = "none"
+            document.getElementById("info-top").style.display = "none"
         } else {
             m.map[m.selectedX][m.selectedY].selected = true;
             document.getElementById("info-image").style.backgroundColor = m.map[m.selectedX][m.selectedY].renderedColor;
             document.getElementById("info-title-container").innerHTML = m.map[m.selectedX][m.selectedY].b.toUpperCase();
-            document.getElementById("info-details").innerHTML = '<div class="info-option">'+ 'Height: ' + m.map[m.selectedX][m.selectedY].h.toFixed(2) + '</div>' + '<div class="info-option"> '+ 'Moisture: ' + m.map[m.selectedX][m.selectedY].m.toFixed(2) + '</div>'
+            document.getElementById("info-top").innerHTML = '<div class="info-option">'+ 'Height: ' + m.map[m.selectedX][m.selectedY].h.toFixed(2) + '</div>' + '<div class="info-option"> ' + 'Moisture: ' + m.map[m.selectedX][m.selectedY].m.toFixed(2) + '</div>' + '<div class="info-option"> ' + 'Temperature: ' + m.map[m.selectedX][m.selectedY].t.toFixed(2) + '</div>'
             document.getElementById("info").style.display = "inline-block"
+            document.getElementById("info-top").style.display = "inline-block"
         }
         draw()
     }

@@ -7,7 +7,12 @@ function zoomIn() {
 }
 
 function zoomOut() {
-    m.tileSize =  Math.ceil(m.tileSize / 2);
+    if (m.tileSize < 2) {
+        m.tileSize =  m.tileSize / 2;
+    } else {
+        m.tileSize =  Math.ceil(m.tileSize / 2);
+    }
+    
     camera.x = Math.floor(camera.x / 2 + window.innerWidth / 4)
     camera.y = Math.floor(camera.y / 2 + window.innerHeight / 4)
 
