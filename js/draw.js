@@ -2,48 +2,62 @@ Number.round = function() {
     return (this + 0.5) << 0;
 };
 
+
+function drawZoomed(zoomAmount, xStart, xEnd, yStart, yEnd) {
+    xStart -=   xStart % 16
+    yStart -=   yStart % 16
+    for (let i = xStart + 1; i < xEnd; i+=zoomAmount) {   
+        for (let j = yStart + 1; j < yEnd; j+=zoomAmount) {
+            if (m.map[i][j].img) {
+                ctx.drawImage(m.map[i][j].renderedColor,m.tileSize*i + camera.x, m.tileSize*j + camera.y, m.tileSize * zoomAmount, m.tileSize * zoomAmount);
+            } else {
+                ctx.fillStyle = m.map[i][j].renderedColor
+                ctx.fillRect(m.tileSize*i + camera.x, m.tileSize*j + camera.y, m.tileSize * zoomAmount, m.tileSize * zoomAmount);
+            }
+        }
+    }
+}
+
 function draw() {
     ctx.clearRect(0, 0, c.width, c.height);
     
     let xStart = clamp(Math.floor(camera.x * -1 / m.tileSize) - 1, 0, m.w)
-    let xEnd = clamp(xStart + camera.maxWTiles, 0, m.w)
+    let xEnd = clamp(xStart + camera.maxWTiles, 0, m.w) 
 
     let yStart = clamp(Math.floor(camera.y * -1 / m.tileSize) - 1, 0, m.h)
-    let yEnd = clamp(yStart + camera.maxHTiles, 0, m.h)
+    let yEnd = clamp(yStart + camera.maxHTiles, 0, m.h) 
     
 
-    if (m.tileSize > 2) {
+    if (m.tileSize > 10 || !settings.doZoomBlur) {
         ctx.beginPath();
         for (let i = xStart + 1; i < xEnd; i++) {   
             for (let j = yStart + 1; j < yEnd; j++) {
-                ctx.fillStyle = m.map[i][j].renderedColor
-                ctx.fillRect(~~(m.tileSize*i + camera.x), ~~(m.tileSize*j + camera.y), m.tileSize, m.tileSize);
 
+
+                if (m.map[i][j].img) {
+                    ctx.drawImage(m.map[i][j].renderedColor,m.tileSize*i + camera.x, m.tileSize*j + camera.y, m.tileSize, m.tileSize);
+                } else {
+                    ctx.fillStyle = m.map[i][j].renderedColor
+                    ctx.fillRect(m.tileSize*i + camera.x, m.tileSize*j + camera.y, m.tileSize, m.tileSize);
+                }
                 // If selected
                 if (m.map[i][j].selected) {
+                    
                     ctx.lineWidth = "4";
                     ctx.strokeStyle = "#000";
-                    ctx.rect(m.tileSize*i + camera.x, m.tileSize*j + camera.y, m.tileSize, m.tileSize);
-                    ctx.stroke();                
+                    ctx.rect(m.tileSize*i + camera.x, m.tileSize*j + camera.y, m.tileSize, m.tileSize);                 
                 }
             }
         }
-        ctx.stroke();
+        ctx.closePath();
+        ctx.stroke(); 
+    }
+    else if (m.tileSize > 5) {
+        drawZoomed(4, xStart, xEnd, yStart, yEnd)
     }
     else {
-        
-        ctx.beginPath();
-        for (let i = Math.floor((xStart) / m.zoomLevel) + 1; i < Math.floor(xEnd / m.zoomLevel); i++) {   
-            for (let j = Math.floor((yStart) / m.zoomLevel) + 1; j < Math.floor(yEnd / m.zoomLevel); j++) {
-                ctx.fillStyle = m.map_s[i][j].renderedColor
-                ctx.fillRect(m.tileSize*i*m.zoomLevel + camera.x , m.tileSize*j*m.zoomLevel + camera.y, m.tileSize * m.zoomLevel, m.tileSize * m.zoomLevel);
-            }
-        }
-        ctx.stroke();
+        drawZoomed(16, xStart, xEnd, yStart, yEnd)
     }
-
-    
-
 
 
 }

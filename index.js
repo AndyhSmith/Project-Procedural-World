@@ -22,11 +22,13 @@ var c = document.getElementById("canvas");
 var ctx = c.getContext("2d");
 c.width = window.innerWidth;
 c.height = window.innerHeight;
+ctx.imageSmoothingEnabled = false;
+c.addEventListener('wheel', zoom);
+
 
 // Variables
 m = {
     map: [],
-    map_s: [],
     tileSize: 20,
     selectedX: null,
     selectedY: null,
@@ -35,9 +37,13 @@ m = {
     zoomLevel: 4
 }
 
+settings = {
+    doZoomBlur: true,
+}
+
 camera = {
-    x: 0,
-    y: 0,
+    x: -(m.w / 2) * m.tileSize,
+    y: -(m.h / 2) * m.tileSize,
     maxWTiles: Math.floor(window.innerWidth / m.tileSize),
     maxHTiles: Math.floor(window.innerHeight / m.tileSize)
 
@@ -113,36 +119,6 @@ for (let j = 0; j < m.w; j++) {
 }
 
 
-// Build condensed map
-console.log("Building Scaled Map")
-for (let j = 0; j < Math.floor(m.w / m.zoomLevel); j++) {
-    row = []
-    for (let i = 0; i < Math.floor(m.h / m.zoomLevel); i++) {
-        // TODO FIND AVERAGES
-        let avgH = 0
-        let avgT = 0
-        let avgM = 0
-        let counter = 0
-        for (let a = 0; a < m.zoomLevel; a++) {
-            for (let b = 0; b < m.zoomLevel; b++) {
-                if (j*m.zoomLevel + a < m.w && i*m.zoomLevel + b) {
-                    avgH += m.map[j*m.zoomLevel + a][i*m.zoomLevel + b].h
-                    avgT += m.map[j*m.zoomLevel + a][i*m.zoomLevel + b].t
-                    avgM += m.map[j*m.zoomLevel + a][i*m.zoomLevel + b].m
-                    counter += 1
-                }                 
-            }
-        }
-
-        newTile = new Tile()
-        newTile.h = avgH / counter
-        newTile.m = avgM / counter
-        newTile.t = avgT / counter
-        newTile.generateBiom()
-        row.push(newTile)
-    }
-    m.map_s.push(row)
-}
 
 console.log("Done")
 end()

@@ -1,42 +1,72 @@
-var DEEP_OCEAN = ["rgb(62,96,193)"]
-var OCEAN = ["rgb(62,96,255)"] //, "rgb(63,92,251)"
-var BEACH = ["rgb(210,185,139)"]
-var LAND = ["rgb(136,171,85)"]
-var SNOW_PEAK = ["rgb(255, 250, 250)"]
-var MOUNTAIN = ["rgb(124,119,113)"]
-var FOREST = ["rgb(1,66,32)"]
+/**
+ * loads a image using a url
+ * @param {*} src 
+ */
+function loadImage(src) {
+    let img =  new Image();  
+    img.src = "assets/images/" + src;
+    return img;
+}
+
+/**
+ * Creates a tile
+ * @param {*} src 
+ * @param {*} color 
+ */
+function createTile(tileColor, src) {
+    if (src == undefined) {
+        const tile = {
+            color: tileColor,
+            img: null
+        }
+        return tile
+    } else {
+        const tile = {
+            color: tileColor,
+            img: loadImage(src)
+        }
+        return tile
+    }
+}
+
+var DEEP_OCEAN = createTile("rgb(62,96,193)")
+var OCEAN = createTile("rgb(62,96,255)")
+var BEACH = createTile("rgb(210,185,139)","sand.png")
+
+
+var LAND = createTile("rgb(136,171,85)", "green_concrete_powder.png")
+var SNOW_PEAK = createTile("rgb(255, 250, 250)", "snow.png")
+var MOUNTAIN = createTile("rgb(124,119,113)", "stone.png")
+var FOREST = createTile("rgb(1,66,32)", "azalea_top.png")
 
 // COLD
-var TUNDRA = ["rgb(148,169,174)"]
-var FROZEN_DESERT = ["rgb(255, 250, 250)"]
-var ICE = ["rgb(165,242,243)"]
-var GRAVEL_BEACH =  ["rgb(136,126,126)"]
-var BOREAL_FOREST = ["rgb(0,46,12)"]
+var TUNDRA = createTile("rgb(148,169,174)", "snow.png")
+var FROZEN_DESERT = createTile("rgb(255, 250, 250)", "white_concrete_powder.png")
+var ICE = createTile("rgb(165,242,243)", "ice.png")
+var GRAVEL_BEACH =  createTile("rgb(136,126,126)", "gravel.png")
+var BOREAL_FOREST = createTile("rgb(0,46,12)", "moss_block.png")
 
 // HOT
-var DESERT = ["rgb(210,185,139)"] //, "rgb(203,180,133)""
-var MESA = ["rgb(149,85,90)"]
+var DESERT = createTile("rgb(210,185,139)", "sand.png")
+const MESA = createTile("rgb(149,85,90)","terracotta.png")
+
+
 
 // var TROPICAL_RAINFOREST
 
-function pickColor(color_array) {
-    if (color_array.length == 1) {
-        return color_array[0]
+function pickColor(tile) {
+    if (tile.img == null) {
+        return tile.color
     } else {
-        if (Math.random() > .5) {
-            return color_array[0]
-        } else {
-            return color_array[1]
-        }
-        
+        return tile.img
     }
-    
 }
 
 class Tile {
     constructor() {
         this.renderedColor = null //`rgb(${this.r}, ${this.g}, ${this.b})`
         this.selected = false
+        this.img = true
 
         this.h = null // height
         this.m = null // moisture
@@ -90,7 +120,10 @@ class Tile {
         else {
             // this.renderedColor = `rgb(${this.r}, ${this.g}, ${this.b})`
         }
-        
+
+        if (typeof this.renderedColor === "string") {
+            this.img = false;
+        }
     }
 
     generateBiom() {

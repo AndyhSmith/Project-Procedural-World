@@ -13,7 +13,7 @@ for (var i = 0; i < stars; i++) {
     let x = Math.random() * window.innerWidth;
     let y = Math.random() * window.innerHeight;
 
-    let radius = Math.random() * 1;
+    let radius = Math.random() * 2;
     let hue = colorrange[getRandom(0,colorrange.length - 1)]
     let sat = getRandom(50,100);
 
