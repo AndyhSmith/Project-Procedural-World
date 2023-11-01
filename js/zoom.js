@@ -1,35 +1,44 @@
+// 1  , 0
+// 1.5, 0.25
+// 2  , 0.5
+// 4  , 1.5
+// y = 0.5x - 0.5
 function zoomIn() {
-    m.tileSize = Math.ceil(m.tileSize * 2);
-    camera.x = Math.floor((camera.x * 2) - (window.innerWidth * .5))
-    camera.y = Math.floor((camera.y * 2) - (window.innerHeight * .5))
+    let zoomAmount = 1.2;
+    m.tileSize = m.tileSize * zoomAmount;
+    camera.x = camera.x * zoomAmount - window.innerWidth * (0.5 * zoomAmount - 0.5);
+    camera.y = camera.y * zoomAmount - window.innerHeight * (0.5 * zoomAmount - 0.5);
+    // camera.y = camera.y * 2 - window.innerHeight * 0.5;
 
-    calcMaxTiles()
+    calcMaxTiles();
 }
 
+// 0.5 , 0.25
+// 0.25, 0.375
+// -0.5x + 0.5
 function zoomOut() {
     // if (m.tileSize < 2) {
     //     m.tileSize =  m.tileSize / 2;
     // } else {
     //     m.tileSize =  Math.ceil(m.tileSize / 2);
     // }
-    m.tileSize =  m.tileSize / 2;
-    camera.x = Math.floor((camera.x / 2) + (window.innerWidth / 4))
-    camera.y = Math.floor((camera.y / 2) + (window.innerHeight / 4))
+    let zoomAmount = 0.9;
+    m.tileSize = m.tileSize * zoomAmount;
+    camera.x = camera.x * zoomAmount + window.innerWidth * (-0.5 * zoomAmount + 0.5);
+    camera.y = camera.y * zoomAmount + window.innerHeight * (-0.5 * zoomAmount + 0.5);
 
-    calcMaxTiles()
+    calcMaxTiles();
 }
 
 function calcMaxTiles() {
-    camera.maxWTiles =  Math.floor(window.innerWidth / m.tileSize) + 3,
-    camera.maxHTiles =  Math.floor(window.innerHeight / m.tileSize) + 3
-    draw()
+    camera.maxWTiles = Math.floor(window.innerWidth / m.tileSize) + 3;
+    camera.maxHTiles = Math.floor(window.innerHeight / m.tileSize) + 3;
+    draw();
 }
-
-
 
 function zoom(event) {
     event.preventDefault();
-    console.log("zooming")
+    console.log("zooming");
     if (event.deltaY > 0) {
         zoomOut();
     } else {
@@ -37,12 +46,7 @@ function zoom(event) {
     }
 }
 
-
-  
-
-
 function toggleZoom() {
-    settings.doZoomBlur = !settings.doZoomBlur
-    draw()
+    settings.doZoomBlur = !settings.doZoomBlur;
+    draw();
 }
-
