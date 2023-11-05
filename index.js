@@ -42,8 +42,8 @@ settings = {
 camera = {
     x: -(m.w / 2) * m.tileSize,
     y: -(m.h / 2) * m.tileSize,
-    maxWTiles: Math.floor(window.innerWidth / m.tileSize),
-    maxHTiles: Math.floor(window.innerHeight / m.tileSize),
+    maxWTiles: window.innerWidth / m.tileSize,
+    maxHTiles: window.innerHeight / m.tileSize,
 };
 
 function noiseW(x, y) {

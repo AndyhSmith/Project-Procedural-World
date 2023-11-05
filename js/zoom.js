@@ -4,7 +4,7 @@
 // 4  , 1.5
 // y = 0.5x - 0.5
 function zoomIn() {
-    let zoomAmount = 1.2;
+    let zoomAmount = 1.1;
     m.tileSize = m.tileSize * zoomAmount;
     camera.x = camera.x * zoomAmount - window.innerWidth * (0.5 * zoomAmount - 0.5);
     camera.y = camera.y * zoomAmount - window.innerHeight * (0.5 * zoomAmount - 0.5);
@@ -22,7 +22,7 @@ function zoomOut() {
     // } else {
     //     m.tileSize =  Math.ceil(m.tileSize / 2);
     // }
-    let zoomAmount = 0.9;
+    let zoomAmount = 0.98;
     m.tileSize = m.tileSize * zoomAmount;
     camera.x = camera.x * zoomAmount + window.innerWidth * (-0.5 * zoomAmount + 0.5);
     camera.y = camera.y * zoomAmount + window.innerHeight * (-0.5 * zoomAmount + 0.5);
@@ -31,8 +31,8 @@ function zoomOut() {
 }
 
 function calcMaxTiles() {
-    camera.maxWTiles = Math.floor(window.innerWidth / m.tileSize) + 3;
-    camera.maxHTiles = Math.floor(window.innerHeight / m.tileSize) + 3;
+    camera.maxWTiles = window.innerWidth / m.tileSize + 3;
+    camera.maxHTiles = window.innerHeight / m.tileSize + 3;
     draw();
 }
 

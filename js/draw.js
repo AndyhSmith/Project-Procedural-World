@@ -32,7 +32,7 @@ function draw() {
     let yStart = clamp(Math.floor((camera.y * -1) / m.tileSize) - 1, 0, m.h);
     let yEnd = clamp(yStart + camera.maxHTiles, 0, m.h);
 
-    if (m.tileSize > 10 || !settings.doZoomBlur) {
+    if (m.tileSize > 12 || !settings.doZoomBlur) {
         ctx.beginPath();
         for (let i = xStart + 1; i < xEnd; i++) {
             for (let j = yStart + 1; j < yEnd; j++) {
